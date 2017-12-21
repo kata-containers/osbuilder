@@ -20,7 +20,7 @@ This section describe the terms used as along all this document.
 
  - `Virtual disk` or `Guest Image`
 
- It is a virtual disk witch contains a `rootfs` that will be used to boot
+ It is a virtual disk which contains a `rootfs` that will be used to boot
  a Virtual Machine by for the `Kata Containers runtime`.
 
  - `rootfs`
@@ -29,5 +29,5 @@ This section describe the terms used as along all this document.
   guest root directory. It can be built from any Linux Distribution but
   must provide at least the following components:
 	- Kata agent
-	- A `init` system (for example `systemd`) witch allow to start
+	- A `init` system (for example `systemd`) which allow to start
 	  Kata agent at boot time.
