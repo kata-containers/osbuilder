@@ -116,6 +116,7 @@ ENV PATH=\$PATH:\$GOROOT/bin:\$GOPATH/bin
 	sed \
 		-e "s|@GO_VERSION@|${GO_VERSION}|g" \
 		-e "s|@OS_VERSION@|${OS_VERSION}|g" \
+		-e "s|@OS_NAME@|${OS_NAME}|g" \
 		-e "s|@INSTALL_GO@|${install_go//$'\n'/\\n}|g" \
 		${dockerfile_template} > Dockerfile
 	popd
@@ -200,9 +201,10 @@ if [ -n "${USE_DOCKER}" ] ; then
 		--env GOPATH="${GOPATH}" \
 		--env KERNEL_MODULES_DIR="${KERNEL_MODULES_DIR}" \
 		-v "${script_dir}":"/osbuilder" \
-		-v "${ROOTFS_DIR}":"/rootfs" \
+		-v "${ROOTFS_DIR}":"${ROOTFS_DIR}" \
 		-v "${kernel_mod_dir}":"${kernel_mod_dir}" \
 		-v "${GOPATH}":"${GOPATH}" \
+		--privileged \
 		${image_name} \
 		bash /osbuilder/rootfs.sh "${distro}"
 
