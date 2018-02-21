@@ -194,7 +194,7 @@ if [ -n "${USE_DOCKER}" ] ; then
 		--env https_proxy="${https_proxy}" \
 		--env http_proxy="${http_proxy}" \
 		--env AGENT_VERSION="${AGENT_VERSION}" \
-		--env ROOTFS_DIR="/rootfs" \
+		--env ROOTFS_DIR="${ROOTFS_DIR}" \
 		--env GO_AGENT_PKG="${GO_AGENT_PKG}" \
 		--env AGENT_BIN="${AGENT_BIN}" \
 		--env AGENT_INIT="${AGENT_INIT}" \
