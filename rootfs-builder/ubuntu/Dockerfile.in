@@ -1,0 +1,6 @@
+From ubuntu:@OS_NAME@
+
+RUN apt-get update && apt-get install -y git systemd debootstrap build-essential
+
+# This will install the proper golang to build Kata components
+@INSTALL_GO@
