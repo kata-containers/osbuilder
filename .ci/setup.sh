@@ -16,7 +16,13 @@ source /etc/os-release
 if [ "$ID" == fedora ];then
 	sudo -E dnf -y install automake bats yamllint coreutils moreutils
 elif [ "$ID" == centos ];then
-	sudo -E dnf -y install automake bats yamllint coreutils moreutils
+	sudo -E dnf -y install automake yamllint coreutils moreutils
+
+	echo "Installing BATS from sources"
+	go get -d github.com/sstephenson/bats || true
+	pushd $GOPATH/src/github.com/sstephenson/bats
+	sudo -E PATH=$PATH sh -c "./install.sh /usr"
+	popd
 elif [ "$ID" == ubuntu ];then
 	#bats isn't available for Ubuntu trusty, need for travis
 	sudo add-apt-repository -y ppa:duggan/bats
