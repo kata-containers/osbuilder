@@ -1,0 +1,13 @@
+#
+# Copyright (c) 2018 Luis Chamberlain <mcgrof@kernel.org>
+#
+# SPDX-License-Identifier: Apache-2.0
+
+From debian:@OS_VERSION@
+
+@SET_PROXY@
+
+RUN apt-get update && apt-get install -y git systemd pkg-config gcc coreutils
+
+# This will install the proper golang to build Kata components
+@INSTALL_GO@
