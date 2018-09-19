@@ -301,6 +301,7 @@ AGENT_DEST="${AGENT_DIR}/${AGENT_BIN}"
 OK "Agent installed"
 
 [ "${AGENT_INIT}" == "yes" ] && setup_agent_init "${AGENT_DEST}" "${init}"
+ln -sf /sbin/init "${ROOTFS_DIR}/init"
 
 info "Check init is installed"
 [ -x "${init}" ] || [ -L "${init}" ] || die "/sbin/init is not installed in ${ROOTFS_DIR}"
