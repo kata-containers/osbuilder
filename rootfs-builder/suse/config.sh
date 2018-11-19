@@ -56,3 +56,8 @@ SUSE_FULLURL_UPDATE="${SUSE_URL_BASE}${SUSE_PATH_UPDATE}"
 if [ -z "${REPO_URL:-}" ]; then
 	REPO_URL="$SUSE_FULLURL_OSS"
 fi
+
+[ "$SECCOMP" = "yes" ] && PACKAGES+=" libseccomp2"
+
+# Ensure script succeeds when sourced
+true
