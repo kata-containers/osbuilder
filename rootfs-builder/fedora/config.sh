@@ -14,10 +14,13 @@ PACKAGES="iptables chrony"
 #Optional packages:
 # systemd: An init system that will start kata-agent if kata-agent
 #          itself is not configured as init process.
-[ "$AGENT_INIT" == "no" ] && PACKAGES+=" systemd" || true
+[ "$AGENT_INIT" = "no" ] && PACKAGES+=" systemd"
 
 # Init process must be one of {systemd,kata-agent}
 INIT_PROCESS=systemd
 ARCH_EXCLUDE_LIST=()
 
-[ "$SECCOMP" = "yes" ] && PACKAGES+=" libseccomp" || true
+[ "$SECCOMP" = "yes" ] && PACKAGES+=" libseccomp"
+
+# Ensure script succeeds when sourced
+true

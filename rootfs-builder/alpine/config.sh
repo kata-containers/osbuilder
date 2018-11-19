@@ -23,4 +23,7 @@ INIT_PROCESS=kata-agent
 # as reported by  `uname -m`
 ARCH_EXCLUDE_LIST=()
 
-[ "$SECCOMP" = "yes" ] && PACKAGES+=" libseccomp" || true
+[ "$SECCOMP" = "yes" ] && PACKAGES+=" libseccomp"
+
+# Ensure script succeeds when sourced
+true

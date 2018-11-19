@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2018 Intel Corporation
+# Copyright (c) 2018-2019 Intel Corporation
 #
 # SPDX-License-Identifier: Apache-2.0
 
@@ -20,3 +20,6 @@ ARCH_EXCLUDE_LIST=()
 # [When uncommented,] Allow the build to fail without generating an error
 # For more info see: https://github.com/kata-containers/osbuilder/issues/190
 #BUILD_CAN_FAIL=1
+
+# Ensure script succeeds when sourced
+true

@@ -30,4 +30,7 @@ INIT_PROCESS=systemd
 # as reported by  `uname -m`
 ARCH_EXCLUDE_LIST=()
 
-[ "$SECCOMP" = "yes" ] && PACKAGES+=" libseccomp2" || true
+[ "$SECCOMP" = "yes" ] && PACKAGES+=" libseccomp2"
+
+# Ensure script succeeds when sourced
+true
