@@ -12,7 +12,7 @@ OS_VERSION=${OS_VERSION:-18.04}
 OS_NAME=${OS_NAME:-"bionic"}
 
 # packages to be installed by default
-PACKAGES="systemd iptables init"
+PACKAGES="systemd iptables init util-linux"
 
 DEBOOTSTRAP=${PACKAGE_MANAGER:-"debootstrap"}
 

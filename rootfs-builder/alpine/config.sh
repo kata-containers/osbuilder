@@ -15,7 +15,7 @@ MIRROR=http://dl-5.alpinelinux.org/alpine
 
 # Mandatory Packages that must be installed
 #  - iptables: Need by Kata agent
-PACKAGES="iptables"
+PACKAGES="iptables util-linux"
 
 # Init process must be one of {systemd,kata-agent}
 INIT_PROCESS=kata-agent
