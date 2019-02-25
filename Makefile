@@ -10,6 +10,7 @@ INITRD_BUILDER := $(MK_DIR)/initrd-builder/initrd_builder.sh
 IMAGE_BUILDER  := $(MK_DIR)/image-builder/image_builder.sh
 
 AGENT_INIT            ?= no
+AGENT_TRACE           ?= no
 DISTRO                ?= centos
 ROOTFS_BUILD_DEST     := $(PWD)
 IMAGES_BUILD_DEST     := $(PWD)

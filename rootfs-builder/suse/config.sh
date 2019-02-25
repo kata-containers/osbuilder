@@ -58,6 +58,7 @@ if [ -z "${REPO_URL:-}" ]; then
 fi
 
 [ "$SECCOMP" = "yes" ] && PACKAGES+=" libseccomp2"
+[ "$AGENT_TRACE" = "yes" ] && PACKAGES+=" socat"
 
 # Ensure script succeeds when sourced
 true

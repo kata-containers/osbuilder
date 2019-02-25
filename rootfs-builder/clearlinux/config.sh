@@ -29,6 +29,7 @@ INIT_PROCESS=systemd
 ARCH_EXCLUDE_LIST=(ppc64le)
 
 [ "$SECCOMP" = "yes" ] && PACKAGES+=" libseccomp"
+[ "$AGENT_TRACE" = "yes" ] && PACKAGES+=" socat"
 
 # Ensure script succeeds when sourced
 true

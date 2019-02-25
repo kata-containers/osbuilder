@@ -52,6 +52,20 @@ To build a rootfs for your chosen distribution, run:
 $ sudo ./rootfs.sh <distro>
 ```
 
+### Enabling tracing
+
+To build a rootfs with agent tracing support, specify the `AGENT_TRACE=yes`
+option:
+
+```
+$ sudo AGENT_TRACE="yes" AGENT_INIT="no" ./rootfs.sh <distro>
+```
+
+> **NOTE:**:
+>
+> Tracing only works for non-initrd images.
+> See https://github.com/kata-containers/agent/blob/master/TRACING.md for further details.
+
 ## Creating a rootfs with kernel modules
 
 To build a rootfs with additional kernel modules, run:

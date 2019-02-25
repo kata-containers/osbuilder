@@ -14,6 +14,8 @@ AGENT_VERSION=${AGENT_VERSION:-}
 GO_AGENT_PKG=${GO_AGENT_PKG:-github.com/kata-containers/agent}
 AGENT_BIN=${AGENT_BIN:-kata-agent}
 AGENT_INIT=${AGENT_INIT:-no}
+AGENT_TRACE=${AGENT_TRACE:-no}
+TRACE_DEV_MODE=${TRACE_DEV_MODE:-no}
 KERNEL_MODULES_DIR=${KERNEL_MODULES_DIR:-""}
 OSBUILDER_VERSION="unknown"
 DOCKER_RUNTIME=${DOCKER_RUNTIME:-runc}
@@ -73,6 +75,11 @@ AGENT_INIT          When set to "yes", use ${AGENT_BIN} as init process in place
                     of systemd.
                     Default value: no
 
+AGENT_TRACE         When set to "yes", create a rootfs containing additional
+                    elements to support tracing the agent using https://jaegertracing.io.
+                    Incompatible with AGENT_INIT="yes".
+                    Default value: no
+
 AGENT_VERSION       Version of the agent to include in the rootfs.
                     Default value: ${AGENT_VERSION:-<not set>}
 
@@ -99,6 +106,9 @@ KERNEL_MODULES_DIR  Path to a directory containing kernel modules to include in
 
 ROOTFS_DIR          Path to the directory that is populated with the rootfs.
                     Default value: <${script_name} path>/rootfs-<distro-name>
+
+TRACE_DEV_MODE      Redirect agent output to journal if set to "yes".
+                    Default value: no
 
 USE_DOCKER          If set, build the rootfs inside a container (requires
                     Docker).
@@ -357,12 +367,14 @@ if [ -n "${USE_DOCKER}" ] ; then
 		--env ROOTFS_DIR="/rootfs" \
 		--env AGENT_BIN="${AGENT_BIN}" \
 		--env AGENT_INIT="${AGENT_INIT}" \
+		--env AGENT_TRACE="${AGENT_TRACE}" \
 		--env GOPATH="${GOPATH_LOCAL}" \
 		--env KERNEL_MODULES_DIR="${KERNEL_MODULES_DIR}" \
 		--env EXTRA_PKGS="${EXTRA_PKGS}" \
 		--env OSBUILDER_VERSION="${OSBUILDER_VERSION}" \
 		--env INSIDE_CONTAINER=1 \
 		--env SECCOMP="${SECCOMP}" \
+		--env TRACE_DEV_MODE="${TRACE_DEV_MODE}" \
 		--env DEBUG="${DEBUG}" \
 		-v "${script_dir}":"/osbuilder" \
 		-v "${ROOTFS_DIR}":"/rootfs" \
@@ -401,6 +413,8 @@ sed -i 's/^\(server \|pool \|peer \)/# &/g'  ${chrony_conf_file}
 # See issue: https://github.com/kata-containers/osbuilder/issues/217
 [ "$distro" == fedora ] && [ "$ARCH" == "s390x" ] && export CC=gcc
 
+[ "${AGENT_TRACE}" = "yes" ] && [ "${AGENT_INIT}" = "yes" ] && die "AGENT_TRACE not supported with AGENT_INIT"
+
 AGENT_DIR="${ROOTFS_DIR}/usr/bin"
 AGENT_DEST="${AGENT_DIR}/${AGENT_BIN}"
 
@@ -414,7 +428,30 @@ if [ -z "${AGENT_SOURCE_BIN}" ] ; then
 	[ -n "${AGENT_VERSION}" ] && git checkout "${AGENT_VERSION}" && OK "git checkout successful"
 	make clean
 	make INIT=${AGENT_INIT}
-	make install DESTDIR="${ROOTFS_DIR}" INIT=${AGENT_INIT} SECCOMP=${SECCOMP}
+	make install DESTDIR="${ROOTFS_DIR}" INIT=${AGENT_INIT} SECCOMP=${SECCOMP} \
+		TRACE="${AGENT_TRACE}" TRACE_DEV_MODE="${TRACE_DEV_MODE}"
+
+	# List of additional agent systemd services (from the agent repository)
+	services=()
+
+	[ "${AGENT_TRACE}" = "yes" ] && services+=("jaeger-client-socat-redirector.service")
+	[ "${TRACE_DEV_MODE}" = "yes" ] && services+=("kata-journald-host-redirect.service")
+
+	# Redirect agent output to journal
+	if [ "${TRACE_DEV_MODE}" = "yes" ]
+	then
+		file="./kata-redirect-agent-output-to-journal.conf"
+		dir="${ROOTFS_DIR}/etc/systemd/system/kata-agent.service.d/"
+		mkdir -p "$dir"
+		install -o root -g root -m 0440 "$file" "$dir"
+	fi
+
+	# Enable services
+	for service in "${services[@]}"
+	do
+		chroot "${ROOTFS_DIR}" systemctl enable "$service"
+	done
+
 	popd
 else
 	cp ${AGENT_SOURCE_BIN} ${AGENT_DEST}

@@ -27,6 +27,7 @@ ARCH_EXCLUDE_LIST=()
 BUILD_CAN_FAIL=1
 
 [ "$SECCOMP" = "yes" ] && PACKAGES+=" libseccomp"
+[ "$AGENT_TRACE" = "yes" ] && PACKAGES+=" socat"
 
 # Ensure script succeeds when sourced
 true
