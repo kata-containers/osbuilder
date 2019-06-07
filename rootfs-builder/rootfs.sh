@@ -336,16 +336,16 @@ if [ -n "${USE_DOCKER}" ] ; then
 
 	docker_run_args+=" $(docker_extra_args $distro)"
 
-	# Relabel volumes so SELinux allows access (see docker-run(1))
-	if command -v selinuxenabled > /dev/null && selinuxenabled ; then
-		for volume_dir in "${script_dir}" \
-				  "${ROOTFS_DIR}" \
-				  "${script_dir}/../scripts" \
-				  "${kernel_mod_dir}" \
-				  "${GOPATH_LOCAL}"; do
-			chcon -Rt svirt_sandbox_file_t "$volume_dir"
-		done
-	fi
+	# # Relabel volumes so SELinux allows access (see docker-run(1))
+	# if command -v selinuxenabled > /dev/null && selinuxenabled ; then
+	# 	for volume_dir in "${script_dir}" \
+	# 			  "${ROOTFS_DIR}" \
+	# 			  "${script_dir}/../scripts" \
+	# 			  "${kernel_mod_dir}" \
+	# 			  "${GOPATH_LOCAL}"; do
+	# 		chcon -Rt svirt_sandbox_file_t "$volume_dir"
+	# 	done
+	# fi
 
 	#Make sure we use a compatible runtime to build rootfs
 	# In case Clear Containers Runtime is installed we dont want to hit issue:
