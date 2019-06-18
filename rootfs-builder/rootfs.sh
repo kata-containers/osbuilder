@@ -18,6 +18,7 @@ KERNEL_MODULES_DIR=${KERNEL_MODULES_DIR:-""}
 OSBUILDER_VERSION="unknown"
 DOCKER_RUNTIME=${DOCKER_RUNTIME:-runc}
 export GOPATH=${GOPATH:-${HOME}/go}
+foo="test-pr"
 
 lib_file="${script_dir}/../scripts/lib.sh"
 source "$lib_file"
