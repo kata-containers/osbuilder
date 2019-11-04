@@ -587,6 +587,8 @@ main()
 	fi
 
 	setup_rootfs
+
+	info "some debug"
 }
 
 main $*
