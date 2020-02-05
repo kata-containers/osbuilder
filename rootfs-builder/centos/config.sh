@@ -5,7 +5,7 @@
 
 OS_NAME="Centos"
 
-OS_VERSION=${OS_VERSION:-7}
+OS_VERSION=${OS_VERSION:-8}
 
 LOG_FILE="/var/log/yum-centos.log"
 

@@ -11,9 +11,7 @@ RUN yum -y update && yum install -y \
 git \
 make \
 gcc \
-coreutils \
 libseccomp \
-libseccomp-devel \
 chrony \
 curl
 
