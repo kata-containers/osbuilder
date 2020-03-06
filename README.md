@@ -106,6 +106,16 @@ For further details, see
 ```
 $ sudo -E PATH=$PATH make USE_DOCKER=true rootfs
 ```
+specially for ubuntu:
+
+you can use this command to build:
+
+```
+sudo -E PATH=$PATH make USE_DOCKER=true rootfs EXTRA_PKGS="util-linux p11-kit udev dbus coreutils bash e2fsprogs"
+```
+
+> **Note**: If you are building rootfs of ubuntu  **you should include those extra pkgs** or you will not successfuly boot from systemd. see this
+[issue414](https://github.com/kata-containers/osbuilder/issues/414) 
 
 #### Rootfs with the agent as init
 
