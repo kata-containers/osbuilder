@@ -6,6 +6,9 @@
 # NOTE: OS_VERSION is set according to config.sh
 from docker.io/debian:@OS_VERSION@
 
+#environment variable declaration, etc
+@SET_UP@
+
 # RUN commands
 RUN apt-get update && apt-get --no-install-recommends install -y \
     apt-utils \
