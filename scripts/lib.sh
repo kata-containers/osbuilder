@@ -274,6 +274,14 @@ generate_dockerfile()
 	curlOptions=("-OL")
 	[ -n "${http_proxy:-}" ] && curlOptions+=("-x ${http_proxy:-}")
 
+	# This only applies to ubuntu/debian
+	# Use this mode when you need zero interaction while
+	# installing or upgrading the system via apt.
+	# It accepts the default answer for all questions.
+	readonly set_up="
+ENV DEBIAN_FRONTEND=noninteractive
+"
+
 	readonly install_go="
 RUN cd /tmp ; curl ${curlOptions[@]} https://storage.googleapis.com/golang/go${GO_VERSION}.linux-${goarch}.tar.gz
 RUN tar -C /usr/ -xzf /tmp/go${GO_VERSION}.linux-${goarch}.tar.gz
@@ -357,6 +365,7 @@ RUN ln -sf /usr/bin/g++ /bin/musl-g++
 	# also long double representation problem when building musl-libc
 	if [ "${architecture}" == "ppc64le" ] || [ "${architecture}" == "s390x" ]; then
 		sed \
+			-e "s|@SET_UP@|${set_up//$'\n'/\\n}|g" \
 			-e "s|@GO_VERSION@|${GO_VERSION}|g" \
 			-e "s|@OS_VERSION@|${OS_VERSION:-}|g" \
 			-e "s|@INSTALL_CMAKE@||g" \
@@ -367,6 +376,7 @@ RUN ln -sf /usr/bin/g++ /bin/musl-g++
 			${dockerfile_template} > Dockerfile
 	else
 		sed \
+			-e "s|@SET_UP@|${set_up//$'\n'/\\n}|g" \
 			-e "s|@GO_VERSION@|${GO_VERSION}|g" \
 			-e "s|@OS_VERSION@|${OS_VERSION:-}|g" \
 			-e "s|@INSTALL_CMAKE@|${install_cmake//$'\n'/\\n}|g" \
