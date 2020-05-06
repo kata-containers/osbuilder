@@ -408,7 +408,7 @@ detect_go_version()
 		typeset -r runtimeVersionsURL="https://raw.githubusercontent.com/kata-containers/runtime/${runtimeRevision}/versions.yaml"
 		info "Getting golang version from ${runtimeVersionsURL}"
 		# This may fail if we are a kata bump.
-		if GO_VERSION="$(curl -fsSL "$runtimeVersionsURL" | $yq r - "languages.golang.version")"; then
+		if GO_VERSION="$(curl -fsSL "$runtimeVersionsURL" | $yq r -X - "languages.golang.version")"; then
 			[ "$GO_VERSION" != "null" ]
 			return 0
 		fi
@@ -420,7 +420,7 @@ detect_go_version()
 		info "There is not runtime repository in filesystem (${kata_runtime_pkg_dir})"
 		local runtime_versions_url="https://raw.githubusercontent.com/kata-containers/runtime/${KATA_BRANCH}/versions.yaml"
 		info "Get versions file from ${runtime_versions_url}"
-		GO_VERSION="$(curl -fsSL "${runtime_versions_url}" | $yq r - "languages.golang.version")"
+		GO_VERSION="$(curl -fsSL "${runtime_versions_url}" | $yq r -X - "languages.golang.version")"
 		if [ "$?" == "0" ] && [ "$GO_VERSION" != "null" ]; then
 			return 0
 		fi
@@ -430,7 +430,7 @@ detect_go_version()
 
 	local kata_versions_file="${kata_runtime_pkg_dir}/versions.yaml"
 	info "Get Go version from ${kata_versions_file}"
-	GO_VERSION="$(cat "${kata_versions_file}"  | $yq r - "languages.golang.version")"
+	GO_VERSION="$(cat "${kata_versions_file}"  | $yq r -X - "languages.golang.version")"
 
 	[ "$?" == "0" ] && [ "$GO_VERSION" != "null" ]
 }
@@ -454,7 +454,7 @@ detect_rust_version()
 		typeset -r runtimeVersionsURL="https://raw.githubusercontent.com/kata-containers/runtime/${runtimeRevision}/versions.yaml"
 		info "Getting rust version from ${runtimeVersionsURL}"
 		# This may fail if we are a kata bump.
-		if RUST_VERSION="$(curl -fsSL "$runtimeVersionsURL" | $yq r - "languages.rust.version")"; then
+		if RUST_VERSION="$(curl -fsSL "$runtimeVersionsURL" | $yq r -X - "languages.rust.version")"; then
 			[ "$RUST_VERSION" != "null" ]
 			return 0
 		fi
@@ -466,7 +466,7 @@ detect_rust_version()
 		info "There is not runtime repository in filesystem (${kata_runtime_pkg_dir})"
 		local runtime_versions_url="https://raw.githubusercontent.com/kata-containers/runtime/${KATA_BRANCH}/versions.yaml"
 		info "Get versions file from ${runtime_versions_url}"
-		RUST_VERSION="$(curl -fsSL "${runtime_versions_url}" | $yq r - "languages.rust.version")"
+		RUST_VERSION="$(curl -fsSL "${runtime_versions_url}" | $yq r -X - "languages.rust.version")"
 		if [ "$?" == "0" ] && [ "$RUST_VERSION" != "null" ]; then
 			return 0
 		fi
@@ -476,7 +476,7 @@ detect_rust_version()
 
 	local kata_versions_file="${kata_runtime_pkg_dir}/versions.yaml"
 	info "Get rust version from ${kata_versions_file}"
-	RUST_VERSION="$(cat "${kata_versions_file}"  | $yq r - "languages.rust.version")"
+	RUST_VERSION="$(cat "${kata_versions_file}"  | $yq r -X - "languages.rust.version")"
 
 	[ "$?" == "0" ] && [ "$RUST_VERSION" != "null" ]
 }
@@ -501,7 +501,7 @@ detect_cmake_version()
 		typeset -r runtimeVersionsURL="https://raw.githubusercontent.com/kata-containers/runtime/${runtimeRevision}/versions.yaml"
 		info "Getting cmake version from ${runtimeVersionsURL}"
 		# This may fail if we are a kata bump.
-		if CMAKE_VERSION="$(curl -fsSL "$runtimeVersionsURL" | $yq r - "externals.cmake.version")"; then
+		if CMAKE_VERSION="$(curl -fsSL "$runtimeVersionsURL" | $yq r -X - "externals.cmake.version")"; then
 			[ "$CMAKE_VERSION" != "null" ]
 			return 0
 		fi
@@ -513,7 +513,7 @@ detect_cmake_version()
 		info "There is not runtime repository in filesystem (${kata_runtime_pkg_dir})"
 		local runtime_versions_url="https://raw.githubusercontent.com/kata-containers/runtime/${KATA_BRANCH}/versions.yaml"
 		info "Get versions file from ${runtime_versions_url}"
-		CMAKE_VERSION="$(curl -fsSL "${runtime_versions_url}" | $yq r - "externals.cmake.version")"
+		CMAKE_VERSION="$(curl -fsSL "${runtime_versions_url}" | $yq r -X - "externals.cmake.version")"
 		if [ "$?" == "0" ] && [ "$CMAKE_VERSION" != "null" ]; then
 			return 0
 		fi
@@ -523,7 +523,7 @@ detect_cmake_version()
 
 	local kata_versions_file="${kata_runtime_pkg_dir}/versions.yaml"
 	info "Get cmake version from ${kata_versions_file}"
-	CMAKE_VERSION="$(cat "${kata_versions_file}"  | $yq r - "externals.cmake.version")"
+	CMAKE_VERSION="$(cat "${kata_versions_file}"  | $yq r -X - "externals.cmake.version")"
 
 	[ "$?" == "0" ] && [ "$CMAKE_VERSION" != "null" ]
 }
@@ -548,7 +548,7 @@ detect_musl_version()
 		typeset -r runtimeVersionsURL="https://raw.githubusercontent.com/kata-containers/runtime/${runtimeRevision}/versions.yaml"
 		info "Getting musl version from ${runtimeVersionsURL}"
 		# This may fail if we are a kata bump.
-		if MUSL_VERSION="$(curl -fsSL "$runtimeVersionsURL" | $yq r - "externals.musl.version")"; then
+		if MUSL_VERSION="$(curl -fsSL "$runtimeVersionsURL" | $yq r -X - "externals.musl.version")"; then
 			[ "$MUSL_VERSION" != "null" ]
 			return 0
 		fi
@@ -560,7 +560,7 @@ detect_musl_version()
 		info "There is not runtime repository in filesystem (${kata_runtime_pkg_dir})"
 		local runtime_versions_url="https://raw.githubusercontent.com/kata-containers/runtime/${KATA_BRANCH}/versions.yaml"
 		info "Get versions file from ${runtime_versions_url}"
-		MUSL_VERSION="$(curl -fsSL "${runtime_versions_url}" | $yq r - "externals.musl.version")"
+		MUSL_VERSION="$(curl -fsSL "${runtime_versions_url}" | $yq r -X - "externals.musl.version")"
 		if [ "$?" == "0" ] && [ "$MUSL_VERSION" != "null" ]; then
 			return 0
 		fi
@@ -570,7 +570,7 @@ detect_musl_version()
 
 	local kata_versions_file="${kata_runtime_pkg_dir}/versions.yaml"
 	info "Get musl version from ${kata_versions_file}"
-	MUSL_VERSION="$(cat "${kata_versions_file}"  | $yq r - "externals.musl.version")"
+	MUSL_VERSION="$(cat "${kata_versions_file}"  | $yq r -X - "externals.musl.version")"
 
 	[ "$?" == "0" ] && [ "$MUSL_VERSION" != "null" ]
 }
