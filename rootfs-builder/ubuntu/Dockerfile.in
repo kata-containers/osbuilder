@@ -34,14 +34,12 @@ RUN apt-get update && apt-get --no-install-recommends install -y \
     libstdc++-8-dev \
     m4 \
     make \
-    musl \
-    musl-dev \
-    musl-tools \
     sed \
     systemd \
     tar \
     vim \
     wget
 # This will install the proper golang to build Kata components
+@INSTALL_MUSL@
 @INSTALL_GO@
 @INSTALL_RUST@
