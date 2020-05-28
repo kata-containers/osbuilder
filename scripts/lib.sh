@@ -294,14 +294,13 @@ ENV PATH=\$PATH:\$GOROOT/bin:\$GOPATH/bin
 	local cmake_file="cmake-${CMAKE_VERSION}.tar.gz"
 	local cmake_dir="cmake-${CMAKE_VERSION}"
 	readonly install_cmake="
-RUN pushd /root; \
+RUN cd /tmp; \
     curl -sLO https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/${cmake_file}; \
 	tar -zxf ${cmake_file}; \
 	cd ${cmake_dir}; \
 	./bootstrap > /dev/null 2>\&1; \
 	make > /dev/null 2>\&1; \
 	make install > /dev/null 2>\&1; \
-	popd
 "
 	# install musl for compiling rust-agent
 	install_musl=
@@ -320,15 +319,14 @@ RUN ln -sf /usr/local/musl/bin/g++ /usr/bin/g++
 		local musl_tar="musl-${MUSL_VERSION}.tar.gz"
 		local musl_dir="musl-${MUSL_VERSION}"
 		install_musl="
-RUN pushd /root; \
+RUN cd /tmp; \
     curl -sLO https://www.musl-libc.org/releases/${musl_tar}; tar -zxf ${musl_tar}; \
 	cd ${musl_dir}; \
 	sed -i \"s/^ARCH = .*/ARCH = ${muslarch}/g\" dist/config.mak; \
 	./configure > /dev/null 2>\&1; \
 	make > /dev/null 2>\&1; \
 	make install > /dev/null 2>\&1; \
-	echo \"/usr/local/musl/lib\" > /etc/ld-musl-${muslarch}.path; \
-	popd
+	echo \"/usr/local/musl/lib\" > /etc/ld-musl-${muslarch}.path
 ENV PATH=\$PATH:/usr/local/musl/bin
 "
 	fi
