@@ -5,15 +5,12 @@
 
 # List of distros not to test, when running all tests with test_images.sh
 typeset -a skipWhenTestingAll
-typeset -a distros
+typeset -a test_distros
 arch="$(uname -m)"
 sdir="${BASH_SOURCE[0]%/*}"
 for distro in $(${sdir}/../rootfs-builder/rootfs.sh -l); do
-	distros+=("${distro}")
+	test_distros+=("${distro}")
 done
-test_distros=()
-test_distros+=("clearlinux")
-test_distros+=("ubuntu")
 
 skipForRustDistros=()
 skipForRustDistros+=("alpine")
@@ -36,16 +33,6 @@ distro_in_set() {
 }
 
 if [ -n "${CI:-}" ]; then
-	# CI tests may timeout with euleros, see:
-	#  https://github.com/kata-containers/osbuilder/issues/46"
-	# Since too many distros timeout for now, we only test clearlinux and ubuntu. We can enable other distros when we fix timeout problem.
-	for distro in "${distros[@]}"; do
-		if distro_in_set "${distro}" "${test_distros[@]}"; then
-			continue
-		fi
-		skipWhenTestingAll+=("${distro}")
-	done
-
 	if [ "${RUST_AGENT:-}" == "yes" ]; then
 		# add skipForRustDistros to skipWhenTestingAll if it is not
 		for td in "${skipForRustDistros[@]}"; do
