@@ -13,6 +13,6 @@ CENTOS_EXTRAS_URL="http://mirror.centos.org/altarch/${OS_VERSION}/extras/${ARCH}
 
 CENTOS_PLUS_URL="http://mirror.centos.org/altarch/${OS_VERSION}/centosplus/${ARCH}/"
 
-GPG_KEY_ARCH_URL="http://mirror.centos.org/altarch/7/os/aarch64/RPM-GPG-KEY-CentOS-7-aarch64"
+GPG_KEY_ARCH_URL="https://github.com/CentOS/sig-core-AltArch/raw/master/centos-release-repo/centos-release-7/aarch64/RPM-GPG-KEY-CentOS-7-aarch64"
 
 GPG_KEY_ARCH_FILE="RPM-GPG-KEY-CentOS-7-aarch64"
