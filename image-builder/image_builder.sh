@@ -186,7 +186,7 @@ check_rootfs() {
 	OK "init is installed"
 
 
-	systemd_path="/lib/systemd/systemd"
+	systemd_path="/usr/lib/systemd/systemd"
 	systemd="${rootfs}${systemd_path}"
 
 	# check agent or systemd
