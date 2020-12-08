@@ -574,3 +574,11 @@ detect_musl_version()
 
 	[ "$?" == "0" ] && [ "$MUSL_VERSION" != "null" ]
 }
+
+before_starting_container() {
+	return 0
+}
+
+after_stopping_container() {
+	return 0
+}
