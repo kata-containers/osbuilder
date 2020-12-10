@@ -80,5 +80,13 @@ build_rootfs() {
 		${ROOTFS_DIR}
 
 	chroot $ROOTFS_DIR ln -s /lib/systemd/systemd /usr/lib/systemd/systemd
-}
 
+	# Reduce image size and memory footprint
+	# removing not needed files and directories.
+	chroot $ROOTFS_DIR apt-get purge -y locales
+	find ${ROOTFS_DIR}/usr/share/doc -depth -type f ! -iname "*copyright*" | xargs rm -f || true
+	find ${ROOTFS_DIR}/usr/share/doc -empty | xargs rmdir || true
+	find ${ROOTFS_DIR}/usr/share/doc -type f -exec gzip -9 {} \;
+	rm -rf ${ROOTFS_DIR}/usr/share/{groff,info,lintian,linda,man}
+	rm -rf ${ROOTFS_DIR}/usr/share/{bash-completion,locale,menu,misc,pixmaps,terminfo,zoneinfo,zsh}
+}
