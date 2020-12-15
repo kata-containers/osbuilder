@@ -383,7 +383,7 @@ build_rootfs_distro()
 		image_name="${distro}-rootfs-osbuilder"
 
 		# setup to install go or rust here
-		generate_dockerfile "${distro_config_dir}"
+		generate_dockerfile "${distro_config_dir}" "${RUST_AGENT}"
 		"$container_engine" build  \
 			--build-arg http_proxy="${http_proxy}" \
 			--build-arg https_proxy="${https_proxy}" \
