@@ -117,10 +117,9 @@ build_rootfs() {
 		-Wl,--copy-dt-needed-entries
 		-Wp,-D_REENTRANT
 		-Wl,--enable-new-dtags
-		-Wl,now
-		-Wl,relro
 		-Wl,-sort-common
-		-Wl,-z
+		-Wl,-z -Wl,now
+		-Wl,-z -Wl,relro
 	)
 
 	local build_dependencies=(
@@ -157,7 +156,7 @@ build_rootfs() {
 	quickpkg --include-unmodified-config=y "*/*"
 
 	# Install needed packages excluding conflicting packages
-	ROOT=${ROOTFS_DIR} emerge --exclude $(echo "${conflicting_packages[*]}") --newuse -k ${PACKAGES}
+	ROOT=${ROOTFS_DIR} emerge --exclude "$(echo "${conflicting_packages[*]}")" --newuse -k ${PACKAGES}
 
 	pushd ${ROOTFS_DIR}
 
